@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "public": {
+      "blog": {
+        "find": true,
+        "findOne": true
+      }
+    }
+  }
+}
