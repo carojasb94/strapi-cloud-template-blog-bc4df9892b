@@ -25,9 +25,10 @@
       "required": true
     },
     "author": {
-      "type": "string",
-      "required": true,
-      "default": "Dra. Zaira"
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::author.author",
+      "inversedBy": "blogs"
     },
     "publishedAt": {
       "type": "datetime",
