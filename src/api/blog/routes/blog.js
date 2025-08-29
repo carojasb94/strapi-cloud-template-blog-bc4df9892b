@@ -6,7 +6,7 @@
 
 const { createCoreRouter } = require('@strapi/strapi').factories;
 
-module.exports = createCoreRouter('api::blog.blog', {
+const defaultRouter = createCoreRouter('api::blog.blog', {
   config: {
     find: {
       auth: false, // Allow public access to read blogs
@@ -18,11 +18,18 @@ module.exports = createCoreRouter('api::blog.blog', {
 });
 
 // Custom route to get blog by slug
-module.exports.routes.push({
-  method: 'GET',
-  path: '/blogs/slug/:slug',
-  handler: 'blog.findBySlug',
-  config: {
-    auth: false,
-  },
-});
+const customRoutes = {
+  routes: [
+    ...defaultRouter.routes,
+    {
+      method: 'GET',
+      path: '/blogs/slug/:slug',
+      handler: 'blog.findBySlug',
+      config: {
+        auth: false,
+      },
+    },
+  ],
+};
+
+module.exports = customRoutes;
