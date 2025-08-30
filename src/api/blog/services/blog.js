@@ -11,7 +11,7 @@ module.exports = createCoreService('api::blog.blog', ({ strapi }) => ({
   async findWithFilters(filters = {}) {
     const query = {
       filters: {},
-      populate: ['featuredImage'],
+      populate: ['featuredImage', 'author'],
       sort: { publishedAt: 'desc' },
     };
 
@@ -53,7 +53,7 @@ module.exports = createCoreService('api::blog.blog', ({ strapi }) => ({
   async findByCategory(category) {
     return await strapi.entityService.findMany('api::blog.blog', {
       filters: { category: { $eq: category } },
-      populate: ['featuredImage'],
+      populate: ['featuredImage', 'author'],
       sort: { publishedAt: 'desc' },
     });
   },
@@ -65,7 +65,7 @@ module.exports = createCoreService('api::blog.blog', ({ strapi }) => ({
         id: { $ne: blogId },
         category: { $eq: category }
       },
-      populate: ['featuredImage'],
+      populate: ['featuredImage', 'author'],
       sort: { publishedAt: 'desc' },
       pagination: { limit }
     });
