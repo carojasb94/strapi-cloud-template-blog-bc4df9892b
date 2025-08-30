@@ -6,68 +6,70 @@
 
 const { createCoreService } = require('@strapi/strapi').factories;
 
-module.exports = createCoreService('api::blog.blog', ({ strapi }) => ({
-  // Custom method to get blogs with advanced filters
-  async findWithFilters(filters = {}) {
-    const query = {
-      filters: {},
-      populate: ['featuredImage', 'author'],
-      sort: { publishedAt: 'desc' },
-    };
+module.exports = createCoreService('api::blog.blog');
 
-    // Apply filters
-    if (filters.category) {
-      query.filters.category = { $eq: filters.category };
-    }
+// module.exports = createCoreService('api::blog.blog', ({ strapi }) => ({
+//   // Custom method to get blogs with advanced filters
+//   async findWithFilters(filters = {}) {
+//     const query = {
+//       filters: {},
+//       populate: ['featuredImage', 'author'],
+//       sort: { publishedAt: 'desc' },
+//     };
 
-    if (filters.search) {
-      query.filters.$or = [
-        { title: { $containsi: filters.search } },
-        { excerpt: { $containsi: filters.search } },
-        { content: { $containsi: filters.search } }
-      ];
-    }
+//     // Apply filters
+//     if (filters.category) {
+//       query.filters.category = { $eq: filters.category };
+//     }
 
-    if (filters.tags && filters.tags.length > 0) {
-      query.filters.tags = { $in: filters.tags };
-    }
+//     if (filters.search) {
+//       query.filters.$or = [
+//         { title: { $containsi: filters.search } },
+//         { excerpt: { $containsi: filters.search } },
+//         { content: { $containsi: filters.search } }
+//       ];
+//     }
 
-    // Apply sorting
-    if (filters.sortBy) {
-      const sortOrder = filters.sortOrder === 'asc' ? 'asc' : 'desc';
-      query.sort = { [filters.sortBy]: sortOrder };
-    }
+//     if (filters.tags && filters.tags.length > 0) {
+//       query.filters.tags = { $in: filters.tags };
+//     }
 
-    // Apply pagination
-    if (filters.page && filters.pageSize) {
-      query.pagination = {
-        page: parseInt(filters.page),
-        pageSize: parseInt(filters.pageSize)
-      };
-    }
+//     // Apply sorting
+//     if (filters.sortBy) {
+//       const sortOrder = filters.sortOrder === 'asc' ? 'asc' : 'desc';
+//       query.sort = { [filters.sortBy]: sortOrder };
+//     }
 
-    return await strapi.entityService.findMany('api::blog.blog', query);
-  },
+//     // Apply pagination
+//     if (filters.page && filters.pageSize) {
+//       query.pagination = {
+//         page: parseInt(filters.page),
+//         pageSize: parseInt(filters.pageSize)
+//       };
+//     }
 
-  // Method to get blogs by category
-  async findByCategory(category) {
-    return await strapi.entityService.findMany('api::blog.blog', {
-      filters: { category: { $eq: category } },
-      populate: ['featuredImage', 'author'],
-      sort: { publishedAt: 'desc' },
-    });
-  },
+//     return await strapi.entityService.findMany('api::blog.blog', query);
+//   },
 
-  // Method to get related blogs
-  async findRelated(blogId, category, limit = 3) {
-    return await strapi.entityService.findMany('api::blog.blog', {
-      filters: {
-        id: { $ne: blogId },
-        category: { $eq: category }
-      },
-      populate: ['featuredImage', 'author'],
-      sort: { publishedAt: 'desc' },
-      pagination: { limit }
-    });
-  }
-}));
+//   // Method to get blogs by category
+//   async findByCategory(category) {
+//     return await strapi.entityService.findMany('api::blog.blog', {
+//       filters: { category: { $eq: category } },
+//       populate: ['featuredImage', 'author'],
+//       sort: { publishedAt: 'desc' },
+//     });
+//   },
+
+//   // Method to get related blogs
+//   async findRelated(blogId, category, limit = 3) {
+//     return await strapi.entityService.findMany('api::blog.blog', {
+//       filters: {
+//         id: { $ne: blogId },
+//         category: { $eq: category }
+//       },
+//       populate: ['featuredImage', 'author'],
+//       sort: { publishedAt: 'desc' },
+//       pagination: { limit }
+//     });
+//   }
+// }));

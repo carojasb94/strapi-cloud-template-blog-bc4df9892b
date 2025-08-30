@@ -8,7 +8,7 @@
     "description": "Create authors for your content"
   },
   "options": {
-    "draftAndPublish": false
+    "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
