@@ -26,6 +26,13 @@ module.exports = createCoreController('api::blog.blog', ({ strapi }) => ({
       query.sort = { publishedAt: 'desc' };
     }
     
+    // Ensure populate includes author if not specified
+    if (!query.populate) {
+      query.populate = ['featuredImage', 'author'];
+    } else if (query.populate === '*') {
+      query.populate = ['featuredImage', 'author'];
+    }
+    
     const { data, meta } = await super.find(ctx);
     
     return { data, meta };
@@ -37,7 +44,7 @@ module.exports = createCoreController('api::blog.blog', ({ strapi }) => ({
     
     const entity = await strapi.entityService.findMany('api::blog.blog', {
       filters: { slug },
-      populate: ['featuredImage'],
+      populate: ['featuredImage', 'author'],
     });
     
     if (!entity || entity.length === 0) {
